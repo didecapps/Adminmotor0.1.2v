@@ -184,12 +184,15 @@ AUTHENTICATION_BACKENDS = (
     #'social.backends.tumblr.TumblrOAuth',
     #'social.backends.twilio.TwilioAuth',
     'social.backends.twitter.TwitterOAuth',    
+    'social.backends.email.EmailAuth',
+    'social.backends.username.UsernameAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/done/'
 URL_PATH = ''
+
 
 SOCIAL_AUTH_TWITTER_KEY = 'aC6BNAxuu606J5oQi9HGg'
 SOCIAL_AUTH_TWITTER_SECRET = '13idodmA9Z3gxtNEVsrWurlsynt2cFN4L8FUWo9Es'
@@ -203,6 +206,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/userinfo.profile'
 ]
+SOCIAL_AUTH_FORCE_EMAIL_VALIDATION = True
 # SOCIAL_AUTH_EMAIL_FORM_URL = '/signup-email'
 SOCIAL_AUTH_EMAIL_FORM_HTML = 'email_signup.html'
 SOCIAL_AUTH_EMAIL_VALIDATION_FUNCTION = 'app.mail.send_validation'
@@ -217,10 +221,33 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_user',
     'social.pipeline.user.get_username',
     'app.pipeline.require_email',
-    'social_auth.backends.pipeline.associate.associate_by_email',
     'social.pipeline.mail.mail_validation',
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details'
 )
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
