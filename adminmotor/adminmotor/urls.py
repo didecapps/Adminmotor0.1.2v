@@ -8,5 +8,6 @@ urlpatterns = patterns('',
     # url(r'^$', 'adminmotor.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^$','app.views.home', name='home'),
+    url(r'^add/$','add.views.add', name='add'),
     url(r'^admin/', include(admin.site.urls)),
 )

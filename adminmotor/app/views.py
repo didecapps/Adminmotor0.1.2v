@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-
+from django.template.context import RequestContext
 
 
 def home(recuest):
@@ -47,3 +47,21 @@ def privado(request):
 def cerrar(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+def add(request)
+    if request.method == "POST" :
+        form = ClientesForm(request.POST)
+        if form.is_valid():
+            form.save()
+             return HttpResponseRedirect("/")
+        else: 
+            form = ClientesForm()
+        template = "form.html"
+        return render_to_response(template,context_instance = RequestContext(request,locals()))
+            pass
+        pass
+
+#def Clientesvista(request):
+ #   clientes= Clientes.objects.all()
+  #  template="index.html"
+   # return render_to_response(clientes,locals())
