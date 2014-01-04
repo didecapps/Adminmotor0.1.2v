@@ -8,13 +8,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-<<<<<<< HEAD
-from django.template.context import RequestContext
-=======
 from django.contrib.auth import logout as auth_logout
 from social.backends.google import GooglePlusAuth
-
->>>>>>> 1f330a7c3aee91337ac79064b6da5d11a90048ae
 
 
 def formas(request):
@@ -95,34 +90,32 @@ def validation_sent(request):
     }, RequestContext(request))
 
 
-<<<<<<< HEAD
-@login_required(login_url='/home')
 def cerrar(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-def add(request)
+def add(request):
+    cliente=Clientes.objects.all()
     if request.method == "POST" :
         form = ClientesForm(request.POST)
         if form.is_valid():
-            form.save()
-             return HttpResponseRedirect("/")
-        else: 
-            form = ClientesForm()
-        template = "form.html"
-        return render_to_response(template,context_instance = RequestContext(request,locals()))
-            pass
-        pass
+           form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        form = ClientesForm()
+    template = "agregar_cliente.html"
+    return render_to_response(template,context_instance = RequestContext(request,locals()))
+          
 
 #def Clientesvista(request):
  #   clientes= Clientes.objects.all()
   #  template="index.html"
    # return render_to_response(clientes,locals())
-=======
+
 def require_email(request):
     if request.method == 'POST':
         request.session['saved_email'] = request.POST.get('email')
         backend = request.session['partial_pipeline']['backend']
         return redirect('social:complete', backend=backend)
     return render_to_response('email.html', RequestContext(request))
->>>>>>> 1f330a7c3aee91337ac79064b6da5d11a90048ae
+
