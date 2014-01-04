@@ -5,8 +5,7 @@ from django.template.context import RequestContext
 from models import *
 from forms import * 
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
@@ -14,15 +13,30 @@ from social.backends.google import GooglePlusAuth
 
 
 
-def home(recuest):
+def formas(request):
+    #usuarios = User.object.all()
+    template="agregar_cliente.html"
+    return render_to_response(template,locals())
+
+def home(request):
 	#usuarios = User.object.all()
 	template="index.html"
 	return render_to_response(template,locals())
 
-
-def home(request):
+"""
+def nuevo_usuario(request):
+    if request.method=='POST':
+        formcreateuser = UserCreationForm(request.POST)
+        if formcreateuser.is_valid:
+            formcreateuser.save()
+            return redirect('done')
+    else:
+        formcreateuser = UserCreationForm()
+    return render_to_response('index.html',{'formulario':formcreateuser}, context_instance=RequestContext(request))
+"""
+def login(request):
     if not request.user.is_anonymous():
-        return HttpResponseRedirect('/privado')
+        return redirect('done')
     if request.POST:
         formulario = AuthenticationForm(request.POST)
         if formulario.is_valid:
@@ -32,7 +46,7 @@ def home(request):
             if acceso is not None:
                 if acceso.is_active:
                     login(request, acceso)
-                    return HttpResponseRedirect('/admin')
+                    return redirect('done')
                 else:
                     return render_to_response('noactivo.html', context_instance=RequestContext(request))
             else:

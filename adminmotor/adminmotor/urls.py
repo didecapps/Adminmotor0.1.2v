@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'app.views.logout', name='logout'),
     url(r'^done/$', 'app.views.done', name='done'),
     url(r'^email/$', 'app.views.require_email', name='require_email'),
+    url(r'^formas/$','app.views.formas', name='formas'),
     url(r'', include('social.apps.django_app.urls', namespace='social'))
 )
