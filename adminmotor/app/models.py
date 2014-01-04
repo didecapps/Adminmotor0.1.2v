@@ -45,7 +45,6 @@ class Modelo(models.Model):
 	nombre_modelo = models.CharField(max_length =80)
 	#imagen = models.ImagenField()
 	def __unicode__(self):
-
 		return self.nombre_modelo
 
 class Marca(models.Model):
@@ -80,7 +79,7 @@ class Marca_producto(models.Model):
 		
 class Tipo_pago(models.Model):
 	nombre_pago =models.CharField(max_length=140)																	
-
+	
 class Compra(models.Model):
    	nombre_productoc = models.CharField(max_length=50)
 	fecha = models.DateField()
