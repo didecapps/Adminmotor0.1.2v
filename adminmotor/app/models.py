@@ -21,25 +21,22 @@ class Paquete(models.Model):
 	def __unicode__(self):
 		return self.tipo_paquete
 
-class Estado (models.Model):
+class Estado(models.Model):
 	nombre_estado = models.CharField(('Nombre'), max_length= 150)
-	late=models.FloatField()
-	lone=models.FloatField()
+	lat=models.FloatField()
+	lon=models.FloatField()
 	pais = models.ForeignKey(Pais,verbose_name=('Pais'))
 	def __unicode__(self):
 		return self.nombre_estado
 
 class Ciudad(models.Model):
 	nombre_ciudad = models.CharField(('Nombre'), max_length =150)
-	latc=models.FloatField()
-	lonc=models.FloatField()
+	lat=models.FloatField()
+	lon=models.FloatField()
 	pais = models.ForeignKey(Pais,verbose_name=('Pais'))
-	estadoc = models.ForeignKey(Estado, verbose_name= ('Estado'))
+	estado = models.ForeignKey(Estado, verbose_name= ('Estado'))
 	def __unicode__(self):
 		return self.nombre_ciudad
-
-class Citas(models.Model):
-	dia_hora = models.DateField()
 
 class Modelo(models.Model):
 	nombre_modelo = models.CharField(max_length =80)
@@ -49,7 +46,7 @@ class Modelo(models.Model):
 
 class Marca(models.Model):
 	nombre_marca = models.CharField(max_length = 80)
-	modelom = models.ForeignKey(Modelo)
+	modelo = models.ForeignKey(Modelo)
 	def __unicode__(self):
 		return self.nombre_marca
 
@@ -63,13 +60,13 @@ class Vehiculo(models.Model):
 	def __unicode__(self):
 		return "%s-%s-%s"%(self.modelo,self.color,self.placas)
 
-class Proveedores(models.Model):
+class Proveedor(models.Model):
 	nombre_proveedor = models.CharField(max_length =50)
 	direccion_proveedor = models.CharField(max_length =50)
 	telefono_proveedor = models.CharField(max_length = 50)
 
 class Tipo_Servicio(models.Model):
-	nombre_ts = models.CharField(max_length = 100)
+	nombre_tipoServicio = models.CharField(max_length = 100)
 	vehiculo= models.ForeignKey(Vehiculo)
 
 class Marca_producto(models.Model):
@@ -81,36 +78,42 @@ class Tipo_pago(models.Model):
 	nombre_pago =models.CharField(max_length=140)																	
 	
 class Compra(models.Model):
-   	nombre_productoc = models.CharField(max_length=50)
+   	nombre_producto = models.CharField(max_length=50)
 	fecha = models.DateField()
 	cantidad = models.IntegerField(max_length = 4)
-	proveedor = models.ForeignKey(Proveedores)
+	proveedor = models.ForeignKey(Proveedor)
+	tipo_pago = models.ForeignKey(Tipo_pago)
 
-class Clientes(models.Model):
-	user= models.ForeignKey(User,unique=True)
+
+class Cliente(models.Model):
+	user= models.OneToOneField(User,unique=True)
 	telefono_cliente = models.CharField(max_length =140)
-	estadoc =models.ForeignKey(Estado)
-	vehiculoc = models.ForeignKey(Vehiculo)
-	tipo_pagoc = models.ForeignKey(Tipo_pago)
-	citasc = models.ForeignKey(Citas)
+	estado=models.ForeignKey(Estado)
+	vehiculo = models.ForeignKey(Vehiculo)
+	#tipo_pagoc = models.ForeignKey(Tipo_pago)
+	#citasc = models.ForeignKey(Citas)
+
+class Cita(models.Model):
+	dia_hora = models.DateField()
+	cliente = models.ForeignKey(Cliente)
 										
 class Venta(models.Model):
 	cantidad= models.IntegerField(max_length = 4)
-	nombre_productov = models.CharField(max_length = 20)
-	clientes= models.ForeignKey(Clientes)
+	nombre_producto = models.CharField(max_length = 20)
+	cliente= models.ForeignKey(Cliente)
 
 class Producto(models.Model):
 	nombre_producto =models.CharField(max_length=50)
 	cantidad_existencia =models.IntegerField(max_length=4)
-	ventap= models.ForeignKey(Venta)
-	comprap = models.ForeignKey(Compra)
-	marcap = models.ForeignKey(Marca_producto)
+	venta= models.ForeignKey(Venta)
+	compra = models.ForeignKey(Compra)
+	marca = models.ForeignKey(Marca_producto)
 						
 
 class Usuario(models.Model):
 	user = models.ForeignKey(User, unique=True)	
    	direccion_u = models.CharField(max_length =140)
-	email_usuario = models.CharField(max_length =50)
+	#email_usuario = models.CharField(max_length =50)
 	tipo_usuariou = models.ForeignKey(Tipo_Usuario)		
 	paquete =models.ForeignKey(Paquete)
 
@@ -118,7 +121,7 @@ class Empleado(models.Model):
 	user = models.ForeignKey(User,unique=True)
 	direccion_emp = models.CharField(max_length=140)
 	telefono_emp = models.CharField(max_length = 140)
-	usuarioe = models.ForeignKey(Usuario)
+	usuario = models.ForeignKey(Usuario)
 
 class Servicio(models.Model):
 	nombre_servicio = models.CharField(max_length=100)

@@ -94,24 +94,6 @@ def cerrar(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-def add(request):
-    cliente=Clientes.objects.all()
-    if request.method == "POST" :
-        form = ClientesForm(request.POST)
-        if form.is_valid():
-           form.save()
-           return HttpResponseRedirect("/")
-    else: 
-        form = ClientesForm()
-    template = "agregar_cliente.html"
-    return render_to_response(template,context_instance = RequestContext(request,locals()))
-          
-
-#def Clientesvista(request):
- #   clientes= Clientes.objects.all()
-  #  template="index.html"
-   # return render_to_response(clientes,locals())
-
 def require_email(request):
     if request.method == 'POST':
         request.session['saved_email'] = request.POST.get('email')
@@ -119,3 +101,131 @@ def require_email(request):
         return redirect('social:complete', backend=backend)
     return render_to_response('email.html', RequestContext(request))
 
+def Registro_cliente(request):
+   # cliente=Clientes.objects.all()
+    if request.method == "POST" :
+        user_form = UserForm(request.POST, instance=request.user)
+        cliente_form = ClienteForm(request.POST, instance=request.user.Cliente) 
+        if user_form.is_valid() and cliente_form.is_valid():
+           user_form.save()
+           cliente_form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        user_form = UserForm(instance=request.user)
+        cliente_form = ClienteForm(instance=request.user.Cliente)
+    template = "agregar_cliente.html"
+    return render_to_response(template,{'user_form': user_form,'clientes_form': cliente_form }, context_instance = RequestContext(request))
+    
+def Registro_empleado(request):
+    #empleado=Empleado.objects.all()
+    if request.method == "POST" :
+        user_form = UserForm(request.POST, instance=request.user)
+        empleado_form = EmpleadoForm(request.POST, instance=request.user.Empleado) 
+        if user_form.is_valid() and empleado_form.is_valid():
+           user_form.save()
+           empleado_form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        user_form = UserForm(instance=request.user)
+        empleado_form = EmpleadoForm(instance=request.user.Empleado)
+    template = "agregar_cliente.html"
+    return render_to_response({'user_form': user_form,'empleado_form': empleado_form }, context_instance = RequestContext(request))
+
+def Registro_usuario(request):
+    #usuario=Usuario.objects.all()
+    if request.method == "POST" :
+        user_form = UserForm(request.POST, instance=request.user)
+        usuario_form = UsuarioForm(request.POST, instance=request.user.Usuario) 
+        if user_form.is_valid() and usuario_form.is_valid():
+           user_form.save()
+           usuario_form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        user_form = UserForm(instance=request.user)
+        usuario_form = UsuarioForm(instance=request.user.Usuario)
+    template = "agregar_cliente.html"
+    return render_to_response(template,{'user_form': user_form,'usuario_form': usuario_form }, context_instance = RequestContext(request,locals()))
+
+def Registro_cita(request):
+    cita=Cita.objects.all()
+    if request.method == "POST":
+        form = CitaForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        form = CitaForm()
+    template = "agregar_cliente.html"
+    return render_to_response(template,context_instance = RequestContext(request,locals()))
+
+def Registro_vehiculo(request):
+    vehiculo=Vehiculo.objects.all()
+    if request.method == "POST":
+        form = VehiculoForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        form = VehiculoForm()
+    template = "agregar_cliente.html"
+    return render_to_response(template,context_instance = RequestContext(request,locals()))
+
+def Registro_proveedor(request):
+    proveedor=Proveedor.objects.all()
+    if request.method == "POST":
+        form = ProveedorForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        form = ProveedorForm()
+    template = "agregar_cliente.html"
+    return render_to_response(template,context_instance = RequestContext(request,locals()))
+
+def Registro_compra(request):
+    compra=Compra.objects.all()
+    if request.method == "POST":
+        form = CompraForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        form = CompraForm()
+    template = "agregar_cliente.html"
+    return render_to_response(template,context_instance = RequestContext(request,locals()))
+
+def Registro_venta(request):
+    venta=Venta.objects.all()
+    if request.method == "POST":
+        form = VentaForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        form = VentaForm()
+    template = "agregar_cliente.html"
+    return render_to_response(template,context_instance = RequestContext(request,locals()))
+
+def Registro_producto(request):
+    producto=Producto.objects.all()
+    if request.method == "POST":
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        form = ProductoForm()
+    template = "agregar_cliente.html"
+    return render_to_response(template,context_instance = RequestContext(request,locals()))
+
+def Registro_servicio(request):
+    servicio=Servicio.objects.all()
+    if request.method == "POST":
+        form = ServicioForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return HttpResponseRedirect("/")
+    else: 
+        form = ServicioForm()
+    template = "agregar_cliente.html"
+    return render_to_response(template,context_instance = RequestContext(request,locals()))
